@@ -209,6 +209,36 @@ def update_category_graph(ddljeniscategory, ddlxcategory):
     }
 
 
+@app.callback(
+    Output('isitab1', 'children'),
+    [Input('inp_drop', 'value')]
+)
+def update_scatter_jmlData(inp_slider):
+    df = panggil(inp_slider)
+    return [
+        html.H4(f'Total Row {len(df)}'),
+        dcc.Graph(
+            id='tableData',
+            figure={
+                'data': [
+                    go.Table(
+                        header=dict(values=['<b>' + j.title() + '<b>' for j in df.columns],
+                                    font=dict(size=15),
+                                    height=30,
+                                    fill=dict(color='#a1c3d1')),
+                        cells=dict(values=[df[i] for i in df.columns],
+                                   align=['right'],
+                                   font=dict(size=15),
+                                   height=30,
+                                   fill=dict(color='#EDFAFF'),)
+                    )
+                ],
+                'layout': dict(height=500, margin={'l': 40, 'b': 40, 't': 10, 'r': 10})
+            }
+        )
+    ]
+
+
 if __name__ == '__main__':
     # run server on port 1997
     # debug=True for auto restart if code edited
